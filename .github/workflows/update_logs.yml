@@ -1,0 +1,36 @@
+name: Run All Tests and Update Failure Logs
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
+      run: |
+        pip install pytest pytest-json-report python-dotenv
+
+    - name: Set environment to production
+      run: echo "ENV=prod" > .env
+
+    - name: Run all tests and update failure log
+      run: python test.py
+
+    - name: Upload failure log
+      uses: actions/upload-artifact@v3
+      with:
+        name: failure_log
+        path: failure_log.json
