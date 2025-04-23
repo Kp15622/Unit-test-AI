@@ -28,9 +28,3 @@ jobs:
 
     - name: Run all tests and update failure log
       run: python test.py
-
-    - name: Upload failure log
-      uses: actions/upload-artifact@v3.1.2
-      with:
-        name: failure_log
-        path: failure_log.json
